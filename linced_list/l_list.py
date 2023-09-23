@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Box:
     def __init__(self, data=None, next=None):
         self.data = data
@@ -8,14 +11,14 @@ class Box_list:
     def __init__(self, head_box=None):
         self.head_box = head_box
 
-    def add_to_beggin(self, item):
+    def add_to_beggin(self, item: Any):
         new_box = Box(item)
         if self.head_box is not None:
             new_box.next = self.head_box
             self.head_box = new_box
         self.head_box = new_box
 
-    def add_to_end(self, item):
+    def add_to_end(self, item: Any):
         new_box = Box(item)
         if self.head_box is None:
             self.head_box = new_box
@@ -32,15 +35,15 @@ class Box_list:
             print(element.data)
             element = element.next
 
-    def index(self):
+    def index(self) -> int:
         box = self.head_box
         index = 0
         while box is not None:
             box = box.next
             index += 1
-        return int(index)
+        return index
 
-    def add_by_index(self, item, index):
+    def add_by_index(self, item: Any, index: int):
         new_box = Box(item)
         corent_box = self.head_box
         time = 1
@@ -50,7 +53,7 @@ class Box_list:
         new_box.next = corent_box.next
         corent_box.next = new_box
 
-    def add_to_midle(self, item):
+    def add_to_midle(self, item: Any):
         new_box = Box(item)
         index = self.index()
         midle = (index) // 2
@@ -70,10 +73,3 @@ class Box_list:
             previos_box = curent_box
             curent_box = curent_box.next
         previos_box.next = None
-
-
-
-
-
-
-
