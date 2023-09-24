@@ -1,38 +1,39 @@
-class Node:
+class Box:
     def __init__(self, data):
         self.data = data
-        self.right = self.left = None
+        self.right = None
+        self.left = None
 
 
 class Tree:
     def __init__(self):
         self.root = None
 
-    def __find(self, node, parent, item):
-        if node is None:
-            return None, parent, False
-        if item == node.data:
-            return node, parent, True
-        if item < node.data:
-            if node.left:
-                return self.__find(node.left, node, item)
-        if item > node.data:
-            if node.right:
-                return self.__find(node.right, node, item)
-        return node, parent, False
+    def __find(self, box, parent_box, item):
+        if box is None:
+            return None, parent_box, False
+        if item == box.data:
+            return box, parent_box, True
+        if item < box.data:
+            if box.left:
+                return self.__find(box.left, box, item)
+        if item > box.data:
+            if box.right:
+                return self.__find(box.right, box, item)
+        return box, parent_box, False
 
     def append(self, item):
         if self.root is None:
             self.root = item
             return item
 
-        s, p, fl_find = self.__find(self.root, None, item.data)
+        box, parent_box, fl_find = self.__find(self.root, None, item.data)
 
-        if not fl_find and s:
-            if item.data < s.data:
-                s.left = item
-            if item.data > s.data:
-                s.right = item
+        if not fl_find and box:
+            if item.data < box.data:
+                box.left = item
+            if item.data > box.data:
+                box.right = item
 
         return item
 
@@ -47,9 +48,9 @@ class Tree:
 
 item = [10, 5, 7, 16, 13, 2, 20]
 
-nod = Tree()
+tree = Tree()
 
 for x in item:
-    nod.append(Node(x))
+    tree.append(Box(x))
 
-nod.show_tree(nod.root)
+tree.show_tree(tree.root)
