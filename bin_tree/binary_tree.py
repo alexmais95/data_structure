@@ -64,18 +64,31 @@ class Tree:
                 parent_box.right = box.left
             if box.left is None:
                 parent_box.right = box.right
+    def find_min(self, box, parent_box):
+        if box.left:
+            return self.find_min(box.left, box)
+
+        return box, parent_box
     def dell__(self, item):
         parent_box, box, flag_find = self.__find_item(None, self.root, item)
 
         if not flag_find:
             return None
+
         if box.left is None and box.right is None:
             self.dell__lif(parent_box, box)
         elif box.left is None or box.right is None:
             self.dell_one_child(parent_box, box)
+        else:
+            box.right, parent_box.right = self. find_min(box.right, box)
+
 
 
 tree = Tree()
-tree.append(Box(1))
-tree.append(Box(2))
+lis_t = [10, 5, 7, 2, 12, 16, 20]
+for i in lis_t:
+    tree.append(Box(i))
+
+tree.show_tree(tree.root)
+tree.dell__(12)
 tree.show_tree(tree.root)
