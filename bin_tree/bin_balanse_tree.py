@@ -48,21 +48,21 @@ class RBTree:
         self.fix_insert(new_node)
 
     def fix_insert(self, new_node):
-        while new_node != self.root and new_node.parent.red:
-            if new_node.parent == new_node.parent.parent.right:
-                u = new_node.parent.parent.left # uncle
-                if u.red:
-                    u.red = False
+        while new_node != self.root and new_node.parent.red:        #пока родитель нода не станет красным
+            if new_node.parent == new_node.parent.parent.right:     #если родитель нода находиться в правой ветке прародителя
+                u = new_node.parent.parent.left             # uncle находиться в левой ветке
+                if u.red:                                   # если дядько красный
+                    u.red = False                           # красим в черный
+                    new_node.parent.red = False             # родитель нода тоже в черный
+                    new_node.parent.parent.red = True       # прародитель красный
+                    new_node = new_node.parent.parent         # определяем нода как прародителя
+                else:                                        # если дядько черный
+                    if new_node == new_node.parent.left:    # если нод левый ребенок
+                        new_node = new_node.parent          # определяем нода как родителя
+                        self.rotate_right(new_node)         # делаем правый оборот нода
                     new_node.parent.red = False
                     new_node.parent.parent.red = True
-                    new_node = new_node.parent.parent
-                else:
-                    if new_node == new_node.parent.left:
-                        new_node = new_node.parent
-                        self.rotate_right(new_node)
-                    new_node.parent.red = False
-                    new_node.parent.parent.red = True
-                    self.rotate_left(new_node.parent.parent)
+                    self.rotate_left(new_node.parent.parent)    # делаем левый оборот прародителя
             else:
                 u = new_node.parent.parent.right # uncle
 
@@ -78,7 +78,7 @@ class RBTree:
                     new_node.parent.red = False
                     new_node.parent.parent.red = True
                     self.rotate_right(new_node.parent.parent)
-        self.root.red = False
+        self.root.red = False                                   # красим рут в черный
 
     def exists(self, val):
         curr = self.root
@@ -91,20 +91,20 @@ class RBTree:
 
     # rotate left at node x
     def rotate_left(self, x):
-        y = x.right
-        x.right = y.left
-        if y.left != self.nil:
+        y = x.right           #Устанавливаем - у как правого ребенка от х
+        x.right = y.left       #отцепляем левого ребенка у, присваеваем его как правого ребенка от х.
+        if y.left != self.nil:  #делаем проверку, пустой ли левый ребенок у
             y.left.parent = x
 
-        y.parent = x.parent
-        if x.parent == None:
+        y.parent = x.parent     #переопределяем у и х
+        if x.parent == None:      #если родитель х бил пустой, то х был рут, им становиться у
             self.root = y
-        elif x == x.parent.left:
+        elif x == x.parent.left:       #если х был левым ребенком им станет у.
             x.parent.left = y
-        else:
+        else:                           #если х был правым ребенком им станет у.
             x.parent.right = y
-        y.left = x
-        x.parent = y
+        y.left = x                      #устанавливаем х как левого ребенка от у.
+        x.parent = y                    #делаем у родителем х
 
     # rotate right at node x
     def rotate_right(self, x):
